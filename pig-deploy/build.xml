@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="pig-deploy" basedir=".">
+	<property file="build.properties" />
+
+	<macrodef name="operate">
+		<attribute name="command" />
+		<sequential>
+			<sshexec host="${host}" username="${user}" password="${pass}" command="@{command}" trust="true" failonerror="true" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="transfer">
+		<attribute name="src" />
+		<attribute name="dst" />
+		<sequential>
+			<scp file="@{src}" todir="${user}@${host}:@{dst}" password="${pass}" trust="true" failonerror="true" />
+		</sequential>
+	</macrodef>
+
+	<target name="deploy">
+		<operate command="rm -rf ${pig.lib.dir};mkdir -p ${pig.lib.dir}" />
+		<transfer src="${base}/../../pig-marble-udf/target/pig-marble-udf-0.0.1-SNAPSHOT.jar" dst="${pig.lib.dir}" />
+		<operate command="ls ${pig.lib.dir}" />
+
+		<operate command="rm ${pig.conf.dir}/pig.properties" />
+		<transfer src="conf/pig.properties" dst="${pig.conf.dir}" />
+		
+		<transfer src="${base}/../../pig-scripts/src/main/data/selfjoin-iterate.txt" dst="${pig.work.dir}"/>
+	</target>
+</project>
