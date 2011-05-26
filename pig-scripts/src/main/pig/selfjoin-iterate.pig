@@ -1,7 +1,12 @@
-records = load 'selfjoin-iterate.txt';
-filtered = filter records by $0 == 1;
-one = join filtered by $1, records by $0;
-two = join one by $3, records by $0;
-result = join two by $5, records by $0;
+-- load data from hdfs
+records = load 'selfjoin-iterate.txt' as (parent:int, child:int);
 
+-- filter root by filter operator
+filtered = filter records by parent == 1;
+
+-- join
+one = join filtered by child left outer, records by parent;
+two = join one by $3 left outer, records by parent;
+
+-- dump
 dump result;
