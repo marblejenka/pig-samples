@@ -1,9 +1,9 @@
-pig-scripts
+##pig-scripts
  sample scripts
 
-pig-marble-udf
+##pig-marble-udf
  udf for pig
 
-pig-deploy
+##pig-deploy
  deploy utilities
 
