@@ -6,7 +6,9 @@ cd work
 
 # install utilities
 sudo apt-get -y install git
+sudo apt-get -y install subversion-tools
 sudo apt-get -y install ruby
+sudo apt-get -y install ant
 
 # install rubygem
 wget http://rubyforge.org/frs/download.php/74954/rubygems-1.8.5.tgz
@@ -37,7 +39,13 @@ ruby vim-ruby-vim-ruby-*/bin/vim-ruby-install.rb
 cd ..
 rm -rf work
 
-# get example data
+# install hamake
+svn checkout http://hamake.googlecode.com/svn/trunk/ hamake-read-only
+cd hamake-read-only
+ant
+export HAMAKE_HOME=$HOME/hamake-read-only/dist
+
+# copy example data
 git clone git://github.com/tomwhite/hadoop-book.git
 git clone git://github.com/marblejenka/pig-samples.git
 rm -rf pig
